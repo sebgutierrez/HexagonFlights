@@ -76,5 +76,3 @@ class Api_call:
     except Exception as e:
       print(e)
       return e
-
-
