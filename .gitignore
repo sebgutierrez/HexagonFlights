@@ -1,2 +1,4 @@
 client/node_modules/
 server/menv/
+venv
+__pycache__

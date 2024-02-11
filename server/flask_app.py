@@ -1,12 +1,15 @@
 import pandas
 import requests
 from flask import Flask, jsonify, request, render_template
+from flask_cors import CORS
 from amadeus.api_call import Api_call
 import json
 from api.flights import dataframebuilder
-# from openai.chatbot import generateResponse
+from openai.chatbot import generateResponse
 
 app = Flask(__name__)
+
+CORS(app)
 
 with open('api/countries.json', 'r') as json_file:
     data = json.load(json_file)
@@ -15,9 +18,16 @@ with open('api/countries.json', 'r') as json_file:
 def welcome():
     return "Hello"
 
-@app.route('/generateResponse', methods=['GET'])
+@app.route('/generate-response', methods=['POST'])
 def generate():
-    return generateResponse("Tell me a joke!")
+    print("Received response body:", request.json.get('prompt'))
+    prompt = request.json.get('prompt')
+    if prompt:
+       response = generateResponse(prompt)
+       return jsonify({'response': response})
+    else:
+        return jsonify({'error': 'No response body provided'}), 400
+
 
 @app.route('/getCountryCodes', methods=['GET', 'POST'])
 def getCountryCodes():
