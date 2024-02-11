@@ -42,6 +42,8 @@ def generateResponse(prompt, inferred_origin="user's location"):
         print(f"Error generating response: {e}")
         return None
     
+	#test
+    
     originLocationCode = ai_response_data.get('originLocationCode')
     destinationLocationCode = ai_response_data.get('destinationLocationCode')
     departure_date = ai_response_data.get('departure_date')	
