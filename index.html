@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flight Booking Example</title>
+<style>
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Find Your Next Adventure</h1>
+</div>
+
+<div class="search-panel">
+  <label for="from">From:</label>
+  <input type="text" id="from" name="from" placeholder="Houston">
+  <label for="to">To:</label>
+  <input type="text" id="to" name="to" placeholder="Where to?">
+  <label for="departure">Departure:</label>
+  <input type="date" id="departure" name="departure">
+  <label for="return">Return:</label>
+  <input type="date" id="return" name="return">
+  <button type="submit">Search Flights</button>
+</div>
+
+<div class="suggested-trips">
+  <h2>Suggested Trips from Houston</h2>
+  <div class="trip">
+    <img src="https://www.wallpaperup.com/uploads/wallpapers/2015/03/06/633191/7457b28b12d412ae19eb5e18a99d3fbd.jpg" alt="New York">
+    <div class="trip-details">
+    <h3>New York</h3>
+    <p>2-8 Mar - Non-stop - 3 hrs 20 min - US$93</p>
+    </div>
+    
+      </div>
+      <div class="trip">
+        <img src="https://www.tripsavvy.com/thmb/dw1scZ-PkJacGr0hTCLL4nRSDi4=/2121x1413/filters:fill(auto,1)/south-beach-miami-from-south-pointe-park--florida--usa-1137673992-0dc4c290e2764b178a5ab5be28dbd2d7.jpg" alt="Miami">
+        <div class="trip-details">
+          <h3>Miami</h3>
+          <p>2-9 Mar - Non-stop - 2 hrs 26 min - US$59</p>
+        </div>
+      </div>
+    </div>
+    <div class="ai-recommendations">
+      <h2>AI-Powered Recommendations</h2>
+      <div id="recommendations"> <!-- AI chat bot! --> </div>
+    </div>
+    </body>
+    </html>
