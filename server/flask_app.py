@@ -7,7 +7,6 @@ import json
 from api.flights import dataframebuilder
 from openai.chatbot import generateResponse,welcome_message
 
-
 app = Flask(__name__)
 
 CORS(app)
@@ -34,6 +33,7 @@ def generate():
     prompt = request.json.get('prompt')
     if prompt:
        response = generateResponse(prompt)
+       
        return jsonify({'response': response})
     else:
         return jsonify({'error': 'No response body provided'}), 400
