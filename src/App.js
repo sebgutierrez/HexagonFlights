@@ -7,7 +7,6 @@ import {ChatUI} from './Components/chatbot.js'
 function App() {
   return (
     <ChatUI />
-    
   );
 }
 

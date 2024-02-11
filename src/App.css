@@ -26,18 +26,38 @@ html {
 }
 
 .msg_card_body {
+  background-color: #fff;
   overflow-y: auto;
 }
 
 .card-header {
   border-radius: 15px 15px 0 0 !important;
   border-bottom: 0 !important;
+  background-color: #481bcf;
+  margin-top: -3px; /* Add negative margin to remove the small padding gap */
+  margin-right:-6px;
+  margin-left:-6px;
 }
 
 .card-footer {
   border-radius: 0 0 15px 15px !important;
   border-top: 0 !important;
+  background-color: #481bcf;
+  margin-bottom: -3px; /* Add negative margin to remove the small padding gap */
+  margin-right:-6px;
+  margin-left:-6px;
+
 }
+
+.chat {
+  margin-top: auto;
+  margin-bottom: auto;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 4px solid #481bcf;
+  padding: 2px;
+  border-radius: 15px;
+}
+
 
 .container {
   align-content: center;
@@ -188,7 +208,7 @@ html {
   margin-bottom: auto;
   margin-right: 10px;
   border-radius: 25px;
-  background-color: #ffffff;
+  background-color: #481bcf;
   padding: 10px;
   position: relative;
 }

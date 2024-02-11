@@ -1,21 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 export default function Chatbot() {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
+  const messageContainerRef = useRef(null);
 
   useEffect(() => {
     const initialBotMessage = {
-      text: "Hey, how can I help you today?",
-      sender: 'bot',
-      time: new Date()
+      text: "Hey, where are you looking to travel? I could be of some help.",
+      sender: 'bot'
     };
     setMessages([initialBotMessage]);
   }, []);
 
+  useEffect(() => {
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const newMessage = { text: inputText, sender: 'user', time: new Date() };
+    const newMessage = { text: inputText, sender: 'user' };
     setMessages([...messages, newMessage]);
 
     try {
@@ -27,7 +33,7 @@ export default function Chatbot() {
         body: JSON.stringify({ msg: inputText }),
       });
       const data = await response.json();
-      const botMessage = { text: data, sender: 'bot', time: new Date() };
+      const botMessage = { text: data, sender: 'bot' };
       setMessages([...messages, newMessage, botMessage]);
     } catch (error) {
       console.error('Error:', error);
@@ -46,11 +52,10 @@ export default function Chatbot() {
               {/* Header Content */}
             </div>
             {/* Message Area */}
-            <div className="card-body msg_card_body">
+            <div ref={messageContainerRef} className="card-body msg_card_body" style={{ overflowY: 'auto' }}>
               {messages.map((msg, index) => (
                 <div key={index} className={`d-flex justify-content-${msg.sender === 'user' ? 'end' : 'start'} mb-4`}>
-                  <div className={`msg_cotainer_${msg.sender === 'user' ? 'send' : ''}`} style={{ color: msg.sender === 'user' ? 'white' : 'black' }}>
-                    <span className="msg_time" style={{ float: 'right' }}>{msg.time.toLocaleTimeString()}</span>
+                  <div className={`msg_cotainer_${msg.sender === 'user' ? 'send' : 'receive'}`} style={{ color: msg.sender === 'user' ? 'white' : 'black', borderColor: msg.sender === 'user' ? 'blue' : 'green' }}>
                     {msg.text}
                   </div>
                 </div>
