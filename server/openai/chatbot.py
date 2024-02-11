@@ -25,7 +25,7 @@ def generateResponse(prompt, inferred_origin="user's location"):
         "from the request and fill in gaps with inferred or default values. "
         f"For example, if a user says: '{prompt}', and the inferred origin is '{inferred_origin}', "
         "format the response accordingly. "
-        "The JSON format your outputting should have this format: " + str  # Assuming 'str' is a string variable holding JSON structure example
+        "The JSON format your outputting should have this format: " + str  
     )
     try:
         response = model.generate_content(
@@ -42,6 +42,7 @@ def generateResponse(prompt, inferred_origin="user's location"):
     except Exception as e:
         print(f"Error generating response: {e}")
         return None
+    
     originLocationCode = ai_response_data.get('originLocationCode')
     destinationLocationCode = ai_response_data.get('destinationLocationCode')
     departure_date = ai_response_data.get('departure_date')	

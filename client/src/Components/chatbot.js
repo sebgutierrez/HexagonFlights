@@ -2,20 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios'
 import { Map } from './Map'
 
-// const searchFlights = async (searchParams) => {
-//   const url = 'https://test.api.amadeus.com/v2/shopping/flight-offers';
-//   const headers = {
-//     'Authorization': `Bearer YOUR_AMADEUS_API_KEY`
-//   };
-
-//   try {
-//     const response = await axios.get(url, { headers, params: searchParams });
-//     return response.data;
-//   } catch (error) {
-//     console.error('Amadeus API request failed:', error);
-//     return null;
-//   }
-// };
+// /home
 
 
 const getUserLocatoin = () =>{
@@ -27,6 +14,7 @@ const getUserLocatoin = () =>{
     }
   });
 }
+
 
 const fetchGeneratedText = async (prompt) => {
   try {
