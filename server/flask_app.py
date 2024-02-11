@@ -24,7 +24,6 @@ def ai_welcome():
     message = welcome_message()
 
     return message.text
-    #here will be calling a functon
 
 
 @app.route('/generate-response', methods=['POST'])
