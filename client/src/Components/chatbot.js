@@ -1,38 +1,32 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios'
 import { Map } from './Map'
-const { GoogleGenerativeAI } = require('@google/generative-ai')
 
-const searchFlights = async (searchParams) => {
-  const url = 'https://test.api.amadeus.com/v2/shopping/flight-offers';
-  const headers = {
-    'Authorization': `Bearer YOUR_AMADEUS_API_KEY`
-  };
+// const searchFlights = async (searchParams) => {
+//   const url = 'https://test.api.amadeus.com/v2/shopping/flight-offers';
+//   const headers = {
+//     'Authorization': `Bearer YOUR_AMADEUS_API_KEY`
+//   };
 
-  try {
-    const response = await axios.get(url, { headers, params: searchParams });
-    return response.data;
-  } catch (error) {
-    console.error('Amadeus API request failed:', error);
-    return null;
-  }
-};
-
-// const fetchGeneratedText = async (prompt) => {
 //   try {
-//     const response = await fetch('/generate-text', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({ prompt }),
-//     });
-//     const data = await response.json();
-//     console.log(data.response); 
+//     const response = await axios.get(url, { headers, params: searchParams });
+//     return response.data;
 //   } catch (error) {
-//     console.error('Error fetching generated text:', error);
+//     console.error('Amadeus API request failed:', error);
+//     return null;
 //   }
 // };
+
+
+const getUserLocatoin = () =>{
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error("Geolocation is not supported by your browser."));
+    } else {
+      navigator.geolocation.getCurrentPosition(resolve, reject);
+    }
+  });
+}
 
 const fetchGeneratedText = async (prompt) => {
   try {
@@ -41,7 +35,7 @@ const fetchGeneratedText = async (prompt) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ prompt }),
+      body: JSON.stringify({ prompt}),
     });
     const data = await response.json();
     console.log(data.response);
@@ -92,7 +86,11 @@ export default function Chatbot() {
     addTextMessage(inputText, 'user');
     setHasInteracted(true);
 
-    const geminiResponse = await fetchGeneratedText(inputText); // Get the response from Gemini 
+    const position = await getUserLocatoin();
+    const {latitude, longitude} = position.coords;
+    const promptWithLocation = `${inputText} [User's location: Latitude ${latitude}, Longitude ${longitude}]`;
+
+    const geminiResponse = await fetchGeneratedText(promptWithLocation); // Get the response from Gemini 
     addTextMessage(geminiResponse, 'bot');                      // ! backend server
 
     if (inputText.toLowerCase().includes('map')) {  //!!! TEST make it so that this runs whenever chatgpt sends a message to it not whenever it includes map
