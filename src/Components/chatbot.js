@@ -1,4 +1,40 @@
 import React, { useEffect, useState, useRef } from 'react';
+import axios from 'axios'
+const { GoogleGenerativeAI } = require('@google/generative-ai')
+
+
+const searchFlights = async (searchParams) => {
+  const url = 'https://test.api.amadeus.com/v2/shopping/flight-offers';
+  const headers = {
+    'Authorization': `Bearer YOUR_AMADEUS_API_KEY`
+  };
+
+  try {
+    const response = await axios.get(url, { headers, params: searchParams });
+    return response.data;
+  } catch (error) {
+    console.error('Amadeus API request failed:', error);
+    return null;
+  }
+};
+
+const fetchGeneratedText = async (prompt) => {
+  try {
+    const response = await fetch('/generate-text', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ prompt }),
+    });
+    const data = await response.json();
+    console.log(data.response); // Use this response to update the state and UI
+  } catch (error) {
+    console.error('Error fetching generated text:', error);
+  }
+};
+
+
 
 export default function Chatbot() {
   const [messages, setMessages] = useState([]);
@@ -21,28 +57,66 @@ export default function Chatbot() {
     }
   }, [messages]);
 
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const userMessage = { text: inputText, sender: 'user' };
+  //   setMessages(messages => [...messages, userMessage]);
+  
+  //   try {
+  //     const openAIResponse = await axios.post(
+  //       'https://api.openai.com/v1/chat/completions',
+  //       {
+  //         model: "gpt-3.5-turbo", 
+  //         prompt: inputText,
+  //         max_tokens: 60,
+  //         temperature: 0.7,
+  //         messages: [
+  //           {"role": "system", "content": "You are a helpful assistant."},
+  //           {"role": "user", "content": inputText},
+  //         ]
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'Authorization': `Bearer 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`,
+  //         },
+  //       });
+  //     const botMessage = {
+  //       text: openAIResponse.data.choices[0].text.trim(),
+  //       sender: 'bot',
+  //       borderColor: 'blue', // You can customize this
+  //       className: 'msg_cotainer_receive' // You can customize this
+  //     };
+  //     setMessages(messages => [...messages, botMessage]);
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  
+  //   setInputText(''); // Clear input after sending
+  // };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const newMessage = { text: inputText, sender: 'user' };
-    setMessages([...messages, newMessage]);
+    const userMessage = { text: inputText, sender: 'user' };
+    setMessages(messages => [...messages, userMessage]);
 
     try {
-      const response = await fetch('/get', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ msg: inputText }),
-      });
-      const data = await response.json();
-      const botMessage = { text: data, sender: 'bot' };
-      setMessages([...messages, newMessage, botMessage]);
+      // Assuming '/api/gemini' is your backend endpoint that communicates with the Gemini AI API
+      const response = await axios.post('/api/gemini', { prompt: inputText });
+      const botMessage = {
+        text: response.data, // Assuming the response directly contains the text
+        sender: 'bot',
+        borderColor: 'blue',
+        className: 'msg_cotainer_receive'
+      };
+      setMessages(messages => [...messages, botMessage]);
     } catch (error) {
       console.error('Error:', error);
     }
 
     setInputText(''); // Clear input after sending
   };
+
+
 
   return (
     <div className="container-fluid h-100">

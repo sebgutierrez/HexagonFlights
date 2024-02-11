@@ -94,7 +94,7 @@ const constrain = function (n, low, high) {
     return (
       <instancedMesh ref={ref} args={[null, null, numDotsX * numDotsY]} >
         <circleGeometry attach="geometry" args={[dotSize, 16]} />
-        <MeshWobbleMaterial factor={20} speed={.5} color="#ff0000"/>
+        <MeshWobbleMaterial factor={20} speed={.6} color="#ff0000"/>
      </instancedMesh>
     );
   }  
