@@ -12,9 +12,9 @@ with open('countries.json', 'r') as json_file:
     data = json.load(json_file)
 
 
-@app.route('/Home', methods= ['GET','POST'])
+@app.route('/', methods= ['GET','POST'])
 def welcome():
-    return render_template('home.html')
+    return render_template('index.html')
 @app.route('/getCountryCodes', methods=['GET', 'POST'])
 def getCountryCodes():
     search_term = request.form.get('search_term', '')
@@ -31,7 +31,12 @@ def flight_searcher():
     return 'Got flights now'
 @app.route('/cheapestroute', methods = ['GET'])
 def cheap_route():
-    df =dataframebuilder().cheapest_flight()
+    from_dest = request.form['From']
+    to_destination = request.form['To']
+    departure = request.form['Departure']
+    arrival = request.form['Return']
+
+    df =dataframebuilder().cheapest_flight(departure_date=departure,originLocationCode=from_dest,destinationLocationCode=to_destination)
     print(f"These are my cheapest flights with a price of {df.iloc[0, df.columns.get_loc('price.grandTotal')]}")
     return f"These are my cheapest flights with a price of {df.iloc[0, df.columns.get_loc('price.grandTotal')]}"
 

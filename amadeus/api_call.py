@@ -27,7 +27,7 @@ class Api_call:
       print(f" There is an error in getting access token {e}")
       return False
 
-  def flight_offers(self,departure_date:str,access_token:str):
+  def flight_offers(self,departure_date:str,access_token:str,originLocationCode:str,destinationLocationCode:str):
     """ Date format has to be in 2023-11-01"""
     try:
       url = "https://test.api.amadeus.com/v2/shopping/flight-offers"
@@ -37,8 +37,8 @@ class Api_call:
         "originDestinations": [
           {
             "id": "1",
-            "originLocationCode": "NYC",
-            "destinationLocationCode": "MAD",
+            "originLocationCode": originLocationCode,
+            "destinationLocationCode": destinationLocationCode,
             "departureDateTimeRange": {
               "date": departure_date,
               "time": "10:00:00"
