@@ -17,7 +17,7 @@ const getUserLocatoin = () =>{
 
 const fetchWelcomeMessage = async (prompt) => {
   try {
-    const response = await fetch('http://localhost:5000/welcome', { // Adjust the URL/port as necessary
+    const response = await fetch('http://localhost:5000', { // Adjust the URL/port as necessary
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

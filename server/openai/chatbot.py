@@ -10,10 +10,10 @@ genai.configure(api_key=GEMINI_KEY)
 model = genai.GenerativeModel('gemini-pro')
 
 
-def welcome():
+def welcome_message():
 	response = model.generate_content('You are a virtual assistant named hexagon for someone trying to get a flight. Send them a warm welcome message that is 3 sentences max.')
 	print(response)
-	return response
+	return response.text
 
 
 
