@@ -50,4 +50,3 @@ def generateResponse(prompt, inferred_origin="user's location"):
     api_caller = Api_call()
     access_token = api_caller.get_access_token()
     flight_offers_response = api_caller.flight_offers(departure_date, access_token, originLocationCode, destinationLocationCode)
-

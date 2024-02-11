@@ -34,7 +34,6 @@ def generate():
     prompt = request.json.get('prompt')
     if prompt:
        response = generateResponse(prompt)
-       
        return jsonify({'response': response})
     else:
         return jsonify({'error': 'No response body provided'}), 400
