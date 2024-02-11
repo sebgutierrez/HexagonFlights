@@ -1,11 +1,12 @@
-import pandas
-import requests
+
+
 from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 from amadeus.api_call import Api_call
 import json
 from api.flights import dataframebuilder
-from openai.chatbot import generateResponse
+from openai.chatbot import generateResponse,welcome_message
+
 
 app = Flask(__name__)
 
@@ -14,9 +15,18 @@ CORS(app)
 with open('api/countries.json', 'r') as json_file:
     data = json.load(json_file)
 
-@app.route('/', methods= ['GET','POST'])
-def welcome():
-    return "Hello"
+# @app.route('/', methods= ['GET','POST'])
+# def welcome():
+#     return "Hello"
+
+@app.route("/home", methods = ['GET','POST'])
+def ai_welcome():
+    print("Ai welcome is starting")
+    message = welcome_message()
+
+    return message.text
+    #here will be calling a functon
+
 
 @app.route('/generate-response', methods=['POST'])
 def generate():
