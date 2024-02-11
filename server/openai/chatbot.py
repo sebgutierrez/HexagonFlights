@@ -10,6 +10,12 @@ genai.configure(api_key=GEMINI_KEY)
 model = genai.GenerativeModel('gemini-pro')
 
 
+def welcome():
+	response = model.generate_content('You are a virtual assistant named hexagon for someone trying to get a flight. Send them a warm welcome message that is 3 sentences max.')
+	print(response)
+	return response
+
+
 
 
 str = '"currencyCode": "USD", "originDestinations": [{"id": "1","originLocationCode": originLocationCode,"destinationLocationCode": destinationLocationCode,"departureDateTimeRange": {"date": departure_date,"time": "10:00:00"}}],"travelers": [{"id": "1","travelerType": "ADULT"}],"sources": ["GDS"],"searchCriteria": {"maxFlightOffers": 100,"flightFilters": {"cabinRestrictions": [{"cabin": "BUSINESS","coverage": "MOST_SEGMENTS","originDestinationIds": ["1"]}'
