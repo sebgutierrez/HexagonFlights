@@ -4,10 +4,9 @@ from flask import Flask, jsonify, request, render_template
 from amadeus.api_call import Api_call
 import json
 from api.flights import dataframebuilder
+from openai.chatbot import generateResponse
 
 app = Flask(__name__)
-
-# test
 
 with open('api/countries.json', 'r') as json_file:
     data = json.load(json_file)
@@ -15,6 +14,10 @@ with open('api/countries.json', 'r') as json_file:
 @app.route('/', methods= ['GET','POST'])
 def welcome():
     return "Hello"
+
+@app.route('/generateResponse', methods=['GET'])
+def generate():
+    return generateResponse("Tell me a joke!")
 
 @app.route('/getCountryCodes', methods=['GET', 'POST'])
 def getCountryCodes():
