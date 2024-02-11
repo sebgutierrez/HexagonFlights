@@ -22,11 +22,13 @@ export function Map({ coordinates }) {
 	return isLoaded ? (
 		<GoogleMap
 			mapContainerStyle={mapContainerStyle}
-			center={coordinates}
+			center={coordinates.length > 0 ? coordinates[0] : { lat: 0, lng: 0 }}
 			zoom={10}
 			options={options}
 		>
-			<Marker position={coordinates}/>
+			{coordinates.map((coord, index) => (
+				<Marker key={index} position={coord} />
+			))}
 		</GoogleMap>
 	) : <></>;
 }

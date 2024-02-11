@@ -40,11 +40,14 @@ const fetchGeneratedText = async (prompt) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ prompt}),
+      // body: JSON.stringify({ prompt}), 
+      //! EDITING THIS
+      body:prompt['message'],
     });
     const data = await response.json();
     console.log(data.response);
-    return data.response; // Return the response text for further use
+    // return data.response; // Return the response text for further use
+    return data;
   } catch (error) {
     console.error('Error fetching generated text:', error);
     return "Sorry, I couldn't understand that."; // Fallback response
@@ -100,18 +103,33 @@ export default function Chatbot() {
     const {latitude, longitude} = position.coords;
     const promptWithLocation = `${inputText} [User's location: Latitude ${latitude}, Longitude ${longitude}]`;
 
-    const geminiResponse = await fetchGeneratedText(promptWithLocation); // Get the response from Gemini 
-    addTextMessage(geminiResponse, 'bot');                      // ! backend server
+    // const geminiResponse = await fetchGeneratedText(promptWithLocation); // Get the response from Gemini
+    const geminiResponse = await fetchGeneratedText({
+      message: inputText,
+      lat: latitude,
+      lng: longitude
+    });
 
-   if (inputText.toLowerCase().includes('map')) { // Adjust based on your logic or response
-      getUserLocatoin().then(position => {
-        const { latitude, longitude } = position.coords;
-        addMapMessage({ lat: latitude, lng: longitude }, "You are here"); // Add a marker label as needed
-      }).catch(error => {
-        console.error("Error getting location", error);
-        addTextMessage("Failed to get location.", 'bot');
-      });
-    }
+    const {message, lat, lng} = geminiResponse;
+
+    addTextMessage(message, 'bot');                      // ! backend server
+
+  //  if (inputText.toLowerCase().includes('map')) { // Adjust based on your logic or response
+  //     getUserLocatoin().then(position => {
+  //       const { latitude, longitude } = position.coords;
+  //       addMapMessage({ lat: latitude, lng: longitude }, "You are here"); // Add a marker label as needed
+  //     }).catch(error => {
+  //       console.error("Error getting location", error);
+  //       addTextMessage("Failed to get location.", 'bot');
+  //     });
+  //   }
+
+  //  setCoordinates({lat: latitude, lng: longitude}, {lat, lng}); // ! OR
+   setCoordinates([
+    { lat: latitude, lng: longitude }, // User's current location
+    { lat, lng } // AI-suggested destination
+  ]);
+
     setInputText(''); // Clear input after sending
   };
 
@@ -137,7 +155,7 @@ export default function Chatbot() {
                   return (
                     <div key={index} className="d-flex justify-content-start mb-4">
                       <div className="msg_container_map" style={{ maxWidth: '100%', height: '250px' }}> {/* Adjust size of map */}
-                        <Map coordinates={msg.coordinates} />
+                        <Map coordinates={coordinates} />
                       </div>
                     </div>
                   );
