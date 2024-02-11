@@ -14,7 +14,7 @@ html {
 }
 
 .card {
-  height: 500px;
+  height: 550px; /* Increase the height value */
   border-radius: 15px !important;
   background-color: #ffffff !important;
 }
@@ -207,6 +207,16 @@ html {
   margin-top: auto;
   margin-bottom: auto;
   margin-right: 10px;
+  border-radius: 25px;
+  background-color: #481bcf;
+  padding: 10px;
+  position: relative;
+}
+
+msg_cotainer_receive{
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 10px;
   border-radius: 25px;
   background-color: #481bcf;
   padding: 10px;

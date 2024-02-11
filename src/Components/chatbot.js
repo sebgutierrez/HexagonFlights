@@ -8,7 +8,9 @@ export default function Chatbot() {
   useEffect(() => {
     const initialBotMessage = {
       text: "Hey, where are you looking to travel? I could be of some help.",
-      sender: 'bot'
+      sender: 'bot',
+      borderColor: 'red', // Added borderColor property
+      className: 'msg_cotainer_receive' // Added className property
     };
     setMessages([initialBotMessage]);
   }, []);
@@ -55,7 +57,7 @@ export default function Chatbot() {
             <div ref={messageContainerRef} className="card-body msg_card_body" style={{ overflowY: 'auto' }}>
               {messages.map((msg, index) => (
                 <div key={index} className={`d-flex justify-content-${msg.sender === 'user' ? 'end' : 'start'} mb-4`}>
-                  <div className={`msg_cotainer_${msg.sender === 'user' ? 'send' : 'receive'}`} style={{ color: msg.sender === 'user' ? 'white' : 'black', borderColor: msg.sender === 'user' ? 'blue' : 'green' }}>
+                  <div className={`msg_cotainer_${msg.sender === 'user' ? 'send' : 'receive'}`} style={{ color: msg.sender === 'user' ? 'white' : 'black', borderColor: msg.borderColor }}>
                     {msg.text}
                   </div>
                 </div>

@@ -5,7 +5,8 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
 import { SavePass } from 'three/examples/jsm/postprocessing/SavePass'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
-import { Color, Vector3 } from 'three';
+import { Vector3 } from 'three';
+import { MeshWobbleMaterial } from '@react-three/drei'
 
 
 extend({ EffectComposer, ShaderPass, SavePass, RenderPass })
@@ -61,7 +62,7 @@ const constrain = function (n, low, high) {
   function Dots() {
     const ref = useRef();
     const { viewport, pointer } = useThree();
-    const dotSize = 0.30; // Size of the dots
+    const dotSize = 0.5; // Size of the dots
   
     // Adjust these values based on how densely you want to fill the screen
     const numDotsX = 50; // Number of dots along the X axis
@@ -79,7 +80,7 @@ const constrain = function (n, low, high) {
         const y = (Math.floor(i / numDotsX) / numDotsY) * viewport.height - (viewport.height / 2);
   
         // Adjust the position slightly towards the mouse
-        const direction = mousePos.clone().sub(new Vector3(x, y, 0)).normalize().multiplyScalar(0.4);
+        const direction = mousePos.clone().sub(new Vector3(x, y, 0)).normalize().multiplyScalar(1);
         const newPosition = new Vector3(x + direction.x, y + direction.y, 0);
   
         const matrix = new THREE.Matrix4();
@@ -91,13 +92,13 @@ const constrain = function (n, low, high) {
     });
   
     return (
-      <instancedMesh ref={ref} args={[null, null, numDotsX * numDotsY]}>
-        <circleGeometry attach="geometry" args={[dotSize, 32]} />
-        <meshPhongMaterial attach="material" opacity={0.6} />
-      </instancedMesh>
+      <instancedMesh ref={ref} args={[null, null, numDotsX * numDotsY]} >
+        <circleGeometry attach="geometry" args={[dotSize, 16]} />
+        <MeshWobbleMaterial factor={20} speed={.5} color="#ff0000"/>
+     </instancedMesh>
     );
-  }
-  
+  }  
+
   function Light() {
     const { viewport } = useThree()
     // viewport = canvas in 3d units (meters)
@@ -119,7 +120,7 @@ const constrain = function (n, low, high) {
     })
   
     return (
-      <spotLight penumbra={1} intensity={1} ref={light} color={0xff00ff}>
+      <spotLight penumbra={1} intensity={1} ref={light} color={0xfef}>
         <object3D ref={obj} position={[0, 0, 0]} />
       </spotLight>
     )
