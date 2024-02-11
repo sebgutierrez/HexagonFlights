@@ -4,12 +4,26 @@ from flask import Flask, jsonify, request, render_template
 from amadeus.api_call import Api_call
 import json
 from api.flights import dataframebuilder
+import jsonify
+
 # from openai.chatbot import generateResponse
 
 app = Flask(__name__)
 
-with open('api/countries.json', 'r') as json_file:
-    data = json.load(json_file)
+# with open('api/countries.json', 'r') as json_file:
+#     data = json.load(json_file)
+@app.route('/generate-response',methods=['POST'])
+def generateresponse():
+    try:
+        data= request.json
+        prompt = data.get('prompt')
+        print(prompt)
+        response = "Generated response based on prompt: " + prompt  # Placeholder response
+        print(response)
+        return jsonify({'response': response})
+    except Exception as e:
+        print('Error generating response:', e)
+        return jsonify({'error': 'Failed to generate response'}), 500
 
 @app.route('/', methods= ['GET','POST'])
 def welcome():
