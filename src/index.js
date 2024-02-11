@@ -1,38 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import { MantineProvider, ColorSchemeScript, Container, Group } from '@mantine/core'
-import '@mantine/core/styles.css';
-import { Top } from './Components/title.js'
+import ReactDOM from 'react-dom';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap is imported here
+import '@fortawesome/fontawesome-free/css/all.min.css'; // FontAwesome
+import './App.css'; // Your custom CSS
+import BackgroundScene from './Components/backgroundScene';
+import Chatbot from './Components/chatbot'; // Import the Chatbot component
 
-
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <MantineProvider>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0"
-        />
-        <title>Hexagon</title>
-
-        <ColorSchemeScript />
-      </head>
-      
-      <body>
-        <Top />
-        <Container
-          style={{ width: '100vhf', boxSizing: 'border-box', border: '3px solid black', height:'500px'}}
-          size=""
-        >
-          <App />
-        </Container>
-      </body>
-    </html>
-  </MantineProvider>
-
+ReactDOM.render(
+  <React.StrictMode>
+    <div>
+      <BackgroundScene/>
+    <Chatbot />
+    </div>
+  </React.StrictMode>,
+  document.getElementById('root')
 );

@@ -1,92 +1,73 @@
-import { useState, useEffect, useRef } from 'react';
-import { Container, TextInput, Button, ScrollArea, Group, Text, createTheme } from '@mantine/core';
+import React, { useEffect, useState } from 'react';
 
-export function ChatUI() {
+export default function Chatbot() {
   const [messages, setMessages] = useState([]);
-  const [inputValue, setInputValue] = useState('');
-  const scrollAreaRef = useRef(null);
+  const [inputText, setInputText] = useState('');
 
   useEffect(() => {
-    const botGreeting = {
-      text: 'Hello! How can I help you?',
+    const initialBotMessage = {
+      text: "Hey, how can I help you today?",
       sender: 'bot',
+      time: new Date()
     };
-    setMessages([botGreeting]);
+    setMessages([initialBotMessage]);
   }, []);
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const newMessage = { text: inputText, sender: 'user', time: new Date() };
+    setMessages([...messages, newMessage]);
 
-  const sendMessage = () => {
-    if (inputValue.trim() !== '') {
-      const userMessage = { text: inputValue, sender: 'user' };
-      setMessages([...messages, userMessage]);
-      setInputValue('');
-
-      fetch('http://localhost:3000/flight_searcher', {
+    try {
+      const response = await fetch('/get', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: userMessage.text }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          const botResponse = {
-            text: data.response,
-            sender: 'bot',
-          };
-          setMessages((prevMessages) => [...prevMessages, botResponse]);
-          scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight; // Auto scroll to bottom
-        })
-        .catch((error) => console.log(error));
+        body: JSON.stringify({ msg: inputText }),
+      });
+      const data = await response.json();
+      const botMessage = { text: data, sender: 'bot', time: new Date() };
+      setMessages([...messages, newMessage, botMessage]);
+    } catch (error) {
+      console.error('Error:', error);
     }
+
+    setInputText(''); // Clear input after sending
   };
 
   return (
-    <Container h={50}>
-      <ScrollArea
-        ref={scrollAreaRef}
-        style={{ height: 400, marginBottom: 20 }}
-        scrollbarSize={2}
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              style={{
-                border: '1px solid ',
-                borderRadius: '10px',
-                padding: '8px',
-                marginBottom: '8px',
-                alignSelf: message.sender === 'user' ? 'flex-end' : 'flex-start',
-                marginTop: index === 0 ? '4px' : '0px', // Add top padding to the first message
-              }}
-            >
-              <div
-                style={{
-                  backgroundColor: message.sender === 'user' ? '#E2E8F0' : '#EBF8FF',
-                  color: message.sender === 'user' ? '#000000' : '#0000FF',
-                }}
-              >
-                {message.text}
-              </div>
+    <div className="container-fluid h-100">
+      <div className="row justify-content-center h-100">
+        <div className="col-md-8 col-xl-6 chat">
+          <div className="card">
+            {/* Card Header */}
+            <div className="card-header msg_head">
+              {/* Header Content */}
             </div>
-          ))}
+            {/* Message Area */}
+            <div className="card-body msg_card_body">
+              {messages.map((msg, index) => (
+                <div key={index} className={`d-flex justify-content-${msg.sender === 'user' ? 'end' : 'start'} mb-4`}>
+                  <div className={`msg_cotainer_${msg.sender === 'user' ? 'send' : ''}`} style={{ color: msg.sender === 'user' ? 'white' : 'black' }}>
+                    <span className="msg_time" style={{ float: 'right' }}>{msg.time.toLocaleTimeString()}</span>
+                    {msg.text}
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Input Area */}
+            <div className="card-footer">
+              <form className="input-group" onSubmit={handleSubmit}>
+                <input type="text" className="form-control type_msg" placeholder="Type your message..." value={inputText} onChange={(e) => setInputText(e.target.value)} required />
+                <div className="input-group-append">
+                  <button className="input-group-text send_btn"><i className="fas fa-location-arrow"></i></button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-      </ScrollArea>
-      <Group position="apart">
-        <TextInput
-          value={inputValue}
-          onChange={(event) => setInputValue(event.currentTarget.value)}
-          placeholder="Type your message here..."
-          style={{ flexGrow: 1, marginRight: 10 }}
-          onKeyPress={(event) => {
-            if (event.key === 'Enter') {
-              sendMessage();
-            }
-          }}
-        />
-        <Button onClick={sendMessage}>Send</Button>
-      </Group>
-    </Container>
+      </div>
+    </div>
   );
 }
