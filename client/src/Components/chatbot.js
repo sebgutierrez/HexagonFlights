@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios'
 import { Map } from './Map'
 
-// /home
+
 
 
 const getUserLocatoin = () =>{
@@ -15,6 +15,23 @@ const getUserLocatoin = () =>{
   });
 }
 
+const fetchWelcomeMessage = async (prompt) => {
+  try {
+    const response = await fetch('http://localhost:5000/welcome', { // Adjust the URL/port as necessary
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ prompt}),
+    });
+    const data = await response.json();
+    console.log(data.response);
+    return data.response; // Return the response text for further use
+  } catch (error) {
+    console.error('Error fetching generated text:', error);
+    return "Sorry, I couldn't understand that."; // Fallback response
+  }
+}
 
 const fetchGeneratedText = async (prompt) => {
   try {
@@ -42,16 +59,21 @@ export default function Chatbot() {
   const [inputText, setInputText] = useState('');
   const [showMap, setShowMap] = useState(false);
   const [coordinates, setCoordinates] = useState(null);
-  const [hasInteracted, setHasInteracted] = useState(false); // Track if the user has interacted
+  const [hasInteracted, setHasInteracted] = useState(false); 
   const messageContainerRef = useRef(null);
 
   useEffect(() => {
-    setMessages([{
-      type: 'text',
-      text: "Hey, where are you looking to travel? I could be of some help.",
-      sender: 'bot',
-      borderColor: 'red',
-    }]);
+    const getWelcomeMessage = async () => {
+      const welcomeMessage = await fetchWelcomeMessage();
+      setMessages([{
+        type: 'text',
+        text: welcomeMessage,
+        sender: 'bot',
+        borderColor: 'red',
+      }]);
+    };
+
+    getWelcomeMessage();
   }, []);
 
   useEffect(() => {
@@ -81,12 +103,15 @@ export default function Chatbot() {
     const geminiResponse = await fetchGeneratedText(promptWithLocation); // Get the response from Gemini 
     addTextMessage(geminiResponse, 'bot');                      // ! backend server
 
-    if (inputText.toLowerCase().includes('map')) {  //!!! TEST make it so that this runs whenever chatgpt sends a message to it not whenever it includes map
-      addMapMessage({ lat: 29.749907, lng: -95.358241 });
-    } else {
-      // do nothing
+   if (inputText.toLowerCase().includes('map')) { // Adjust based on your logic or response
+      getUserLocatoin().then(position => {
+        const { latitude, longitude } = position.coords;
+        addMapMessage({ lat: latitude, lng: longitude }, "You are here"); // Add a marker label as needed
+      }).catch(error => {
+        console.error("Error getting location", error);
+        addTextMessage("Failed to get location.", 'bot');
+      });
     }
-
     setInputText(''); // Clear input after sending
   };
 

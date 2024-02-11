@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { GoogleMap, useJsApiLoader, InfoWindow } from "@react-google-maps/api";
-
+import { GoogleMap, useJsApiLoader, InfoWindow , Marker} from "@react-google-maps/api";
 const mapContainerStyle = { width: '300px', height: '200px' }; // Adjust size as needed
 
 export function Map({ coordinates }) {
@@ -27,7 +26,7 @@ export function Map({ coordinates }) {
 			zoom={10}
 			options={options}
 		>
-			{}
+			<Marker position={coordinates}/>
 		</GoogleMap>
 	) : <></>;
 }
