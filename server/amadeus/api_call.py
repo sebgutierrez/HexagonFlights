@@ -7,10 +7,6 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-
-
-
-
 class Api_call:
   def get_access_token(self):
     try:

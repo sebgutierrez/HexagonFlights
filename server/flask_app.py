@@ -3,18 +3,18 @@ import requests
 from flask import Flask, jsonify, request, render_template
 from amadeus.api_call import Api_call
 import json
-from data_manipulation.flights import dataframebuilder
+from api.flights import dataframebuilder
 
 app = Flask(__name__)
 
 
-with open('countries.json', 'r') as json_file:
+with open('api/countries.json', 'r') as json_file:
     data = json.load(json_file)
-
 
 @app.route('/', methods= ['GET','POST'])
 def welcome():
-    return render_template('index.html')
+    return "Hello"
+
 @app.route('/getCountryCodes', methods=['GET', 'POST'])
 def getCountryCodes():
     search_term = request.form.get('search_term', '')
@@ -29,6 +29,7 @@ def flight_searcher():
     date = request.args.get('date')
     Api_call().flight_offers(departure_date=f"{date}",access_token=Api_call().get_access_token())
     return 'Got flights now'
+
 @app.route('/cheapestroute', methods = ['GET'])
 def cheap_route():
     from_dest = request.form['From']

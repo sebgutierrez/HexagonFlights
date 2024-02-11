@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import App from './App.js';
 import { MantineProvider, ColorSchemeScript, Container, Group } from '@mantine/core'
 import '@mantine/core/styles.css';
 import { Top } from './Components/title.js'

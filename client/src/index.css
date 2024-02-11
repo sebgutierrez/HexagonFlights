@@ -15,3 +15,34 @@ code {
 * {
   /* background-color: rgb(59, 116, 163); */
 }
+
+#ai-recommendations {
+  display: flex;
+  position: relative;
+  border: solid red 1px;
+  width: 100%;
+  background-color: purple;
+}
+
+#bot-text-box {
+  display: absolute;
+  border: solid blue 1px;
+  width: fit-content;
+
+}
+
+#bot-text {
+  font: 1rem;
+  color: black;
+}
+
+#user-text-box {
+  display: absolute;
+  border: solid black 1px;
+  width: fit-content;
+}
+
+#bot-text {
+  font: 1rem;
+  color: black;
+}

@@ -3,8 +3,6 @@ import pandas as pd
 from pandas import DataFrame
 from amadeus.api_call import Api_call
 
-
-
 class dataframebuilder:
     def flights(self):
         try:
